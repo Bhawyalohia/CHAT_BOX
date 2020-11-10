@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+<body>
+<div class=”container”>
+ <br>
+ <div>
+ <h1>Send Message</h1>
+ <br>
+ <input id = "name" placeholder=”Name” name="name">
+ <br>
+ <input id = "message" placeholder=”message” name="message">
+ <br>
+ <button id="send">send</button>
+ </div>
+ <div id="messages">
+   
+  </div>
+</div>
+<script>
+  document.querySelector("#send").addEventListener("click",()=>{
+     console.log("send hoja bsdk");
+    sendMessage({
+        name: $("#name").val(), 
+        message:$("#message").val()});
+      getMessages();
+    });
+    
+ function addMessages(message){
+    var name=document.createTextNode(message.name);
+    var messa=document.createTextNode(message.message);
+    var para=document.createElement("p");
+    var heading=document.createElement("h4");
+    para.appendChild(messa);
+    heading.appendChild(name);
+    document.querySelector("#messages").appendChild(heading);
+    document.querySelector("#messages").appendChild(para);
+    document.querySelector("#messages").appendChild(document.createElement("hr"));
+    }
+   
+ function getMessages(){
+   $.get("http://localhost:3000/messagess", (data) => {
+    data.forEach(addMessages);
+    });
+  }
+ 
+ function sendMessage(message){
+    $.post("http://localhost:3000/messagess", message);
+ 
+}
+</script>
+</body>
+</html>
